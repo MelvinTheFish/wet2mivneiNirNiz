@@ -19,6 +19,9 @@ private:
     weak_ptr<Player_UnionFind_Node> root_player;
     permutation_t team_spirit;
 public:
+    void setTeamSpirit(const permutation_t &teamSpirit);
+
+public:
     const permutation_t &getTeamSpirit() const;
 
 public:

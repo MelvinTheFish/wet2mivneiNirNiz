@@ -31,3 +31,11 @@ const permutation_t &Player::getPartialSpirit() const {
 void Player::setPartialSpirit(const permutation_t &partialSpirit) {
     partial_spirit = partialSpirit;
 }
+
+int Player::getGamesPlayed() const {
+    return games_played;
+}
+
+void Player::setGamesPlayed(int gamesPlayed) {
+    games_played = gamesPlayed;
+}

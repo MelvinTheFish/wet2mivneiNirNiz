@@ -22,13 +22,18 @@ private:
     shared_ptr<Team> father_team; ///if its not the root, it will be null
     permutation_t diff_from_father; ///diff_from_father * player.spirit = partial_spirit
 
+    int games_played_alone;
+    int additional_games;
+    int games_of_team_without;
+
     shared_ptr<Team> findHelper(shared_ptr<Player_UnionFind_Node> current);
 
 
 public:
     Player_UnionFind_Node(const shared_ptr<Player> &real_player, const shared_ptr<Team> &team);
 
-    shared_ptr<Team> find();
+    shared_ptr<Team> Find();
+    friend shared_ptr<Team> Union(const shared_ptr<Team>& buyer_team, const shared_ptr<Team>& sold_team);
 };
 
 

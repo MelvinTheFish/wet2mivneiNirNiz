@@ -22,7 +22,7 @@ public:
 private:
     int team_id;
     const permutation_t spirit;
-    permutation_t partial_spirit;///not always valid, only right after find.
+    permutation_t partial_spirit;///not always valid, only right after Find.
 public:
     const permutation_t &getPartialSpirit() const;
 
@@ -33,6 +33,11 @@ public:
 
 private:
     int games_played;
+public:
+    int getGamesPlayed() const;
+
+    void setGamesPlayed(int gamesPlayed);
+
 public:
     Player(int playerId, int teamId, const permutation_t &spirit, int gamesPlayed, int ability, int cards,
            bool goalKeeper);

@@ -75,3 +75,7 @@ void Team::setSize(int new_size) {
 const permutation_t &Team::getTeamSpirit() const {
     return team_spirit;
 }
+
+void Team::setTeamSpirit(const permutation_t &teamSpirit) {
+    team_spirit = teamSpirit;
+}
