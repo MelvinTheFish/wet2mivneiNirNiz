@@ -44,3 +44,5 @@ shared_ptr<Team> Player_UnionFind_Node::findHelper(shared_ptr<Player_UnionFind_N
     shared_ptr<Player> current_player = current->player.lock();
     current_player->setPartialSpirit(current_father->player.lock()->getPartialSpirit() * current->diff_from_father);
 }
+
+//great!
