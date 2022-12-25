@@ -10,7 +10,7 @@ Player::Player(int playerId, int teamId, const permutation_t &spirit, int gamesP
                         partial_spirit(spirit){
 }
 
-const shared_ptr<Player_UnionFind_Node> &Player::getUnionFindNode() const {
+shared_ptr<Player_UnionFind_Node> Player::getUnionFindNode() const {
     return union_find_node;
 }
 
@@ -38,4 +38,8 @@ int Player::getGamesPlayed() const {
 
 void Player::setGamesPlayed(int gamesPlayed) {
     games_played = gamesPlayed;
+}
+
+int Player::getPlayerId() const {
+    return player_id;
 }

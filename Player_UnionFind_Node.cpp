@@ -4,15 +4,15 @@
 
 #include "Player_UnionFind_Node.h"
 
-Player_UnionFind_Node::Player_UnionFind_Node(const shared_ptr<Player> &real_player, const shared_ptr<Team> &team)
+Player_UnionFind_Node::Player_UnionFind_Node(const shared_ptr<Player> real_player, const shared_ptr<Team> team)
         : player(real_player), father_player_node(nullptr), father_team(nullptr),
         diff_from_father(permutation_t::neutral()), games_played_alone(real_player->getGamesPlayed()),
         additional_games(0), games_of_team_without(0){
     ///creating a new node to add real_player to team.
 
 
-    shared_ptr<Player_UnionFind_Node> this_sp(this);///maybe not possible, if so do it in player
-    real_player->setUnionFindNode(this_sp);
+    //shared_ptr<Player_UnionFind_Node> this_sp(this);///maybe not possible, if so do it in player
+    //real_player->setUnionFindNode(this_sp);
 
     shared_ptr<Player_UnionFind_Node> root_node_sp = team->getRootPlayer().lock();
     if (root_node_sp){///theres a root already
@@ -22,7 +22,7 @@ Player_UnionFind_Node::Player_UnionFind_Node(const shared_ptr<Player> &real_play
 
         ///spirit:
         permutation_t father_partial_spirit = player_in_root->getPartialSpirit();
-        permutation_t teamSpirit = root_node_sp->father_team->getTeamSpirit();///its the root so it has a pointer to a team
+        permutation_t teamSpirit = team->getTeamSpirit();///its the root so it has a pointer to a team
 
         this->diff_from_father = father_partial_spirit.inv() * teamSpirit * real_player->getSpirit();
 
@@ -31,16 +31,17 @@ Player_UnionFind_Node::Player_UnionFind_Node(const shared_ptr<Player> &real_play
     }
     else{///no root, so this will be the root and will point to team
         this->father_team = team;
+        //team->setRootPlayer(this_sp);
     }
     team->setTeamSpirit(team->getTeamSpirit()*real_player->getSpirit());
+    //team->setSize(team->getSize()+1);
 }
 
-shared_ptr<Team> Player_UnionFind_Node::Find() {
-    shared_ptr<Player_UnionFind_Node> this_sp(this);
-    return findHelper(this_sp);
+shared_ptr<Team> Find(shared_ptr<Player> player) {
+    return findHelper(player->getUnionFindNode());
 }
 
-shared_ptr<Team> Player_UnionFind_Node::findHelper(shared_ptr<Player_UnionFind_Node> current) {
+shared_ptr<Team> findHelper(shared_ptr<Player_UnionFind_Node> current) {
     if (!current->father_player_node) {///is root
         return current->father_team;
     }
@@ -51,8 +52,8 @@ shared_ptr<Team> Player_UnionFind_Node::findHelper(shared_ptr<Player_UnionFind_N
     shared_ptr<Player> current_player = current->player.lock();
 
     ///updating partial spirits
-    current->diff_from_father = current_father->diff_from_father * current->diff_from_father;
     current_player->setPartialSpirit(current_father->player.lock()->getPartialSpirit() * current->diff_from_father);
+    current->diff_from_father = current_father->diff_from_father * current->diff_from_father;
 
     ///updating games played
     if (current->father_player_node->father_player_node){///father is not root
@@ -71,13 +72,13 @@ shared_ptr<Team> Player_UnionFind_Node::findHelper(shared_ptr<Player_UnionFind_N
     return team;
 }
 
-shared_ptr<Team> Union(const shared_ptr<Team>& buyer_team, const shared_ptr<Team>& sold_team) {
+shared_ptr<Team> Union(shared_ptr<Team> buyer_team, shared_ptr<Team> sold_team) {
 
     shared_ptr<Player_UnionFind_Node> smaller_root_player_node, bigger_root_player_node;
 
-    if (buyer_team->getSize() > sold_team->getSize()){///bigger buys smaller
-        smaller_root_player_node = sold_team->getRootPlayer().lock();
-        bigger_root_player_node = buyer_team->getRootPlayer().lock();
+    if (buyer_team->size > sold_team->size){///bigger buys smaller
+        smaller_root_player_node = sold_team->root_player.lock();
+        bigger_root_player_node = buyer_team->root_player.lock();
 
         shared_ptr<Player_UnionFind_Node> sold_root_node = bigger_root_player_node;
         shared_ptr<Player_UnionFind_Node> buyer_root_node = smaller_root_player_node;
@@ -86,7 +87,7 @@ shared_ptr<Team> Union(const shared_ptr<Team>& buyer_team, const shared_ptr<Team
         shared_ptr<Player> buyer_root_player = buyer_root_node->player.lock();
 
         smaller_root_player_node->diff_from_father = buyer_root_player->getPartialSpirit().inv()
-                * buyer_team->getTeamSpirit()
+                * buyer_team->team_spirit
                 * buyer_root_player->getPartialSpirit();
 
     }
@@ -122,8 +123,3 @@ shared_ptr<Team> Union(const shared_ptr<Team>& buyer_team, const shared_ptr<Team
 
     return buyer_team;
 }
-<<<<<<< HEAD
-
-=======
-///asfasdffafsssssssssssssssssssssssssssssssssssss
->>>>>>> origin/master

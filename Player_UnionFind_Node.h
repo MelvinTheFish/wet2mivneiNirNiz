@@ -26,14 +26,14 @@ private:
     int additional_games;
     int games_of_team_without;
 
-    shared_ptr<Team> findHelper(shared_ptr<Player_UnionFind_Node> current);
+    friend shared_ptr<Team> findHelper(shared_ptr<Player_UnionFind_Node> current);
 
 
 public:
-    Player_UnionFind_Node(const shared_ptr<Player> &real_player, const shared_ptr<Team> &team);
+    Player_UnionFind_Node(shared_ptr<Player> real_player, shared_ptr<Team> team);
 
-    shared_ptr<Team> Find();
-    friend shared_ptr<Team> Union(const shared_ptr<Team>& buyer_team, const shared_ptr<Team>& sold_team);
+    friend shared_ptr<Team> Find(shared_ptr<Player> player);
+    friend shared_ptr<Team> Union(shared_ptr<Team> buyer_team, shared_ptr<Team> sold_team);
 };
 
 

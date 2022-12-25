@@ -34,14 +34,48 @@ int main() {
     for (int i = 0; i < 5; ++i) {
         teams[i] = make_shared<Team>(i);
         for (int j = 0; j < 5; ++j) {
-            if(id-1 < 24){
+            if(id-1 <= 24){
                 fill_random_permutation(arr);
                 players[id-1] = make_shared<Player>(id, i, permutation_t(arr), 0, 0, 0, true);
-                Player_UnionFind_Node node = Player_UnionFind_Node(players[id-1], teams[i]);
+                shared_ptr<Player_UnionFind_Node> node = make_shared<Player_UnionFind_Node>(players[id-1], teams[i]);
+                players[id-1]->setUnionFindNode(node);
+                if (teams[i]->getSize() == 0){
+                    teams[i]->setRootPlayer(node);
+                }
+                teams[i]->setSize(teams[i]->getSize()+1);
                 id++;
             }
         }
     }
+
+    ///testing spirits right after adding
+    id = 1;
+    for (int i = 0; i < 5; ++i) {
+        permutation_t so_far = permutation_t::neutral();
+        for (int j = 0; j < 5; ++j) {
+            Find(players[id-1]);
+            cout << "player " << id << "'s partial spirit: " << players[id-1]->getPartialSpirit() << endl;
+            so_far = so_far * players[id-1]->getSpirit();
+            cout << "so_far :" << so_far << endl;
+            id++;
+        }
+        cout << "team " << i << "'s spirit: " << teams[i]->getTeamSpirit() << endl;
+    }
+    cout << "testing after uniterergaergaergaerga " << endl;
+
+
+    shared_ptr<Team> team0_bought_0 = Union(teams[0], teams[1]);
+
+    permutation_t so_far = permutation_t::neutral();
+    for (int i = 0; i < 10; ++i) {
+        Find(players[i]);
+        cout << "player " << i+1 << "'s partial spirit: " << players[i]->getPartialSpirit() << endl;
+        so_far = so_far * players[i]->getSpirit();
+        cout << "so_far :" << so_far << endl;
+    }
+    cout << "team " << 0 << "'s spirit: " << teams[0]->getTeamSpirit() << endl;
+
+
 
 
 
