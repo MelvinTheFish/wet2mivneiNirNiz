@@ -36,7 +36,7 @@ int main() {
         for (int j = 0; j < 5; ++j) {
             if(id-1 <= 24){
                 fill_random_permutation(arr);
-                players[id-1] = make_shared<Player>(id, i, permutation_t(arr), 0, 0, 0, true);
+                players[id-1] = make_shared<Player>(id, i, permutation_t(arr), id, 0, 0, true);
                 shared_ptr<Player_UnionFind_Node> node = make_shared<Player_UnionFind_Node>(players[id-1], teams[i]);
                 players[id-1]->setUnionFindNode(node);
                 if (teams[i]->getSize() == 0){
@@ -61,10 +61,13 @@ int main() {
         }
         cout << "team " << i << "'s spirit: " << teams[i]->getTeamSpirit() << endl;
     }
-    cout << "testing after uniterergaergaergaerga " << endl;
+
+    cout << "testing after union of bigger buys smaller " << endl;
+    cout << "testing after union of bigger buys smaller " << endl;
+    cout << "testing after union of bigger buys smaller " << endl;
 
 
-    shared_ptr<Team> team0_bought_0 = Union(teams[0], teams[1]);
+    shared_ptr<Team> team0_bought_1 = Union(teams[0], teams[1]);
 
     permutation_t so_far = permutation_t::neutral();
     for (int i = 0; i < 10; ++i) {
@@ -76,6 +79,45 @@ int main() {
     cout << "team " << 0 << "'s spirit: " << teams[0]->getTeamSpirit() << endl;
 
 
+    cout << "testing after union of bigger buys smaller " << endl;
+    cout << "testing after union of bigger buys smaller " << endl;
+    cout << "testing after union of bigger buys smaller " << endl;
+
+
+    shared_ptr<Team> team01_bought_2 = Union(teams[0], teams[2]);
+
+    so_far = permutation_t::neutral();
+    for (int i = 0; i < 15; ++i) {
+        Find(players[i]);
+        cout << "player " << i+1 << "'s partial spirit: " << players[i]->getPartialSpirit() << endl;
+        so_far = so_far * players[i]->getSpirit();
+        cout << "so_far :" << so_far << endl;
+    }
+    cout << "team " << 0 << "'s spirit: " << teams[0]->getTeamSpirit() << endl;
+
+
+    cout << "testing after union of smaller buys bigger " << endl;
+    cout << "testing after union of smaller buys bigger " << endl;
+    cout << "testing after union of smaller buys bigger " << endl;
+
+
+    shared_ptr<Team> team3_bought_012 = Union(teams[3], teams[0]);
+
+    so_far = permutation_t::neutral();
+    int tmp;
+    for (int i = 0; i < 20; ++i) {
+        if (i < 5){
+            tmp = i+15;
+        }
+        else{
+            tmp = i-5;
+        }
+        Find(players[tmp]);
+        cout << "player " << tmp+1 << "'s partial spirit: " << players[tmp]->getPartialSpirit() << endl;
+        so_far = so_far * players[tmp]->getSpirit();
+        cout << "so_far :" << so_far << endl;
+    }
+    cout << "team " << 3 << "'s spirit: " << teams[3]->getTeamSpirit() << endl;
 
 
 

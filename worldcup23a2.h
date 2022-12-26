@@ -16,13 +16,21 @@
 #define WORLDCUP23A2_H_
 
 #include "wet2util.h"
+#include "avl_rank.h"
+#include "Team.h"
+#include <memory>
+
+using namespace std;
 
 class world_cup_t {
 private:
 	//
 	// Here you may add anything you want
 	//
-	
+    AvlRankTree<shared_ptr<Team>> teamsByPlayersAbility;
+    AvlRankTree<shared_ptr<Team>> teamsById;
+
+	//hash
 public:
 	// <DO-NOT-MODIFY> {
 	
