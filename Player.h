@@ -11,6 +11,7 @@
 
 
 class Player_UnionFind_Node;
+class Team;
 
 using namespace std;
 
@@ -55,9 +56,12 @@ private:
 
     shared_ptr<Player_UnionFind_Node> union_find_node;
 public:
-    const shared_ptr<Player_UnionFind_Node> &getUnionFindNode() const;
+    shared_ptr<Player_UnionFind_Node> getUnionFindNode() const;
 
     void setUnionFindNode(const shared_ptr<Player_UnionFind_Node> &unionFindNode);
+
+    friend shared_ptr<Team> Find(shared_ptr<Player> player);
+
 
 };
 

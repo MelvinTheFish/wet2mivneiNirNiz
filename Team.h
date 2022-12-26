@@ -45,6 +45,7 @@ public:
     static bool teamSumAbilityBigger(const shared_ptr<Team>& team1, const shared_ptr<Team>& team2);
     static bool teamIdEquals(const shared_ptr<Team>& team1, const shared_ptr<Team>& team2);
     static bool teamSumAbilityEquals(const shared_ptr<Team>& team1, const shared_ptr<Team>& team2);
+    friend shared_ptr<Team> Union(shared_ptr<Team> buyer_team, shared_ptr<Team> sold_team);
 };
 
 

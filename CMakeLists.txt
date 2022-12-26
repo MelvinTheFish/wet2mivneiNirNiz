@@ -14,7 +14,5 @@ add_executable(wet2mivneiNirNiz main.cpp
         Player_UnionFind_Node.h
         Player.h
         Player.cpp
-        HashTable.cpp
         HashTable.h
-        List.h
-        List.cpp)
+        HashTable.cpp)
