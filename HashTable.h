@@ -7,7 +7,7 @@
 
 #include "Player.h"
 #include "memory"
-
+#include "List.h"
 
 class HashTable{
 
@@ -15,15 +15,14 @@ class HashTable{
 public:
 
     HashTable();
-    HashTable(int tableSize, int hash2, int PowerOf2Index);
+    HashTable(int tableSize ,int PowerOf2Index);
     HashTable(const HashTable& hashTable);
     HashTable& operator=(const HashTable& hashTable);
     ~HashTable() = default;
 
     bool isTableFull();
     void ExpandTable();
-    int hash1(int key);
-    int hash2(int key);
+    int hash(int key);
     int insertHash(shared_ptr<Player> player);
     void removeFromTable(shared_ptr<Player> player);
     void RahashTable();
@@ -45,11 +44,9 @@ public:
 
 private:
 
-    shared_ptr<Player>* hashTable;
+    List* hashTable;
     int curretnSize;
-    int* isAvailable;
     int sizeOfTable;
-    int sizeOfHash2;
     int PowerOf2Index;
 
 

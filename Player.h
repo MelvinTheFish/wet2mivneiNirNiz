@@ -17,6 +17,9 @@ using namespace std;
 class Player {
     int player_id;
 public:
+    int getPlayerId() const;
+
+public:
     explicit Player(int playerId);
 
 private:
@@ -37,6 +40,7 @@ public:
     int getGamesPlayed() const;
 
     void setGamesPlayed(int gamesPlayed);
+
 
 public:
     Player(int playerId, int teamId, const permutation_t &spirit, int gamesPlayed, int ability, int cards,

@@ -5,42 +5,33 @@
 #include "iostream"
 
 #include "math.h"
+#include "List.h"
 
 HashTable::HashTable(){
 
     this->curretnSize = 0;
     this->PowerOf2Index = 4;
     this->sizeOfTable =  pow(2,4)-1;
-    this->sizeOfHash2 = sizeOfTable - 3;
-    hashTable = new shared_ptr<Player>[sizeOfTable];
-    isAvailable = (int*) malloc(sizeOfTable*sizeof(int));
-    for(int i=0;i<this->sizeOfTable;++i){
-        this->isAvailable[i] = 1;
-    }
+    hashTable = new List[sizeOfTable];
+
 }
-HashTable::HashTable(int tableSize, int hash2, int PowerOf2Index) {
+HashTable::HashTable(int tableSize, int PowerOf2Index) {
 
     this->curretnSize = 0;
     this->PowerOf2Index = PowerOf2Index;
     this->sizeOfTable = tableSize;
-    this->sizeOfHash2 = hash2;
-    hashTable = new shared_ptr<Player>[sizeOfTable];
-    isAvailable = (int*) malloc(sizeOfTable*sizeof(int));
-    for(int i=0;i<this->sizeOfTable;++i){
-        this->isAvailable[i] = 1;
-    }
+    hashTable = new List[sizeOfTable];
 
 }
 
 HashTable::HashTable(const HashTable &other) {
 
     this->curretnSize = other.curretnSize;
-    this->hashTable = (shared_ptr<Player>*)malloc(other.curretnSize*sizeof(shared_ptr<Player>));
+    this->hashTable = new List[other.sizeOfTable];
+    this->PowerOf2Index = other.PowerOf2Index;
     for(int i=0;i<other.curretnSize;++i) {
-        this->hashTable[i].swap(other.hashTable[i]);
-        this->isAvailable[i] = other.isAvailable[i];
+        this->hashTable[i] = other.hashTable[i];
     }
-
 }
 
 HashTable &HashTable::operator=(const HashTable &other) {
@@ -48,14 +39,12 @@ HashTable &HashTable::operator=(const HashTable &other) {
         return *this;
     }
 
-    free(this->hashTable);
-    free(this->isAvailable);
+    delete(this->hashTable);
     this->curretnSize = other.curretnSize;
-    this->hashTable = (shared_ptr<Player>*)malloc(other.curretnSize*sizeof(shared_ptr<Player>));
-    this->isAvailable = (int*) malloc(other.curretnSize*sizeof(int));
-    for(int i=0;i<other.curretnSize;++i) {
-        this->hashTable[i].swap(hashTable[i]);
-        this->isAvailable[i] = other.isAvailable[i];
+    this->PowerOf2Index = other.PowerOf2Index;
+    this->hashTable = new List[other.sizeOfTable];
+    for(int i=0;i<other.sizeOfTable;++i) {
+        this->hashTable[i] = other.hashTable[i];
     }
     return *this;
 
@@ -65,13 +54,13 @@ HashTable &HashTable::operator=(const HashTable &other) {
 //    free(this->isAvailableToSearch);
 //}
 
-int HashTable::hash1(int key) {
+int HashTable::hash(int key) {
     return key % this->sizeOfTable;
 }
 
-int HashTable::hash2(int key) {
-    return 1 + key % this->sizeOfHash2;
-}
+//int HashTable::hash2(int key) {
+//    return 1 + key % this->sizeOfHash2;
+//}
 
 
 
@@ -83,35 +72,13 @@ int HashTable::insertHash(shared_ptr<Player> player) {
 //        return -1;
 //    }
 
-
     if(this->isTableFull()){
         this->ExpandTable();
     }
-    int hash1Index = hash1(player->getPlayerId());
-    int hash2Index = hash2(player->getPlayerId());
-
-    if(!this->isAvailable[hash1Index]){
-        int k = 0;
-        bool isFound = false;
-        while(!isFound){
-            int newIndex = (hash1Index+k*hash2Index)%this->sizeOfTable;
-            if(this->isAvailable[newIndex]){
-                hashTable[newIndex].swap(player);
-                this->isAvailable[newIndex]=0;
-                isFound = true;
-                this->curretnSize++;
-                return newIndex;
-            }
-            k++;
-        }
-    }
-    else{
-
-        hashTable[hash1Index].swap(player);
-        this->isAvailable[hash1Index] = 0;
-        this->curretnSize++;
-        return hash1Index;
-    }
+    int hashIndex = hash(player->getPlayerId());
+    this->hashTable[hashIndex].AddToList(player);
+    this->curretnSize++;
+    return hashIndex;
 }
 
 
@@ -138,24 +105,13 @@ int HashTable::insertHash(shared_ptr<Player> player) {
 //}
 int HashTable::findInHashTable(int playerId) {
 
-    int hash1Index = hash1(playerId);
-    int hash2Index = hash2(playerId);
-    int k = 0;
-    bool isFound = false;
-    while(!isFound){
-        int newIndex = (hash1Index+k*hash2Index)%this->sizeOfTable;
-        if(this->isAvailable[newIndex]){
-            return -1;
-        }
-        if(!this->isAvailable[newIndex]){
-            if(this->hashTable[newIndex]->getPlayerId() == playerId){
-                isFound = true;
-                return newIndex;
-            }
-        }
-        k++;
+    int hashIndex = hash(playerId);
+    int index = this->hashTable[hashIndex].isInList(playerId);
+    if(index != -1){
+        return hashIndex;
     }
-    return -1;
+    return index;
+
 }
 
 void HashTable::ExpandTable() {
@@ -163,23 +119,20 @@ void HashTable::ExpandTable() {
     this->PowerOf2Index++;
     int newSize = pow(2,this->PowerOf2Index)-1;
 
-    HashTable newHashTable(newSize,newSize-1,this->PowerOf2Index);
-    for(int i=0;i<this->sizeOfTable;++i){
-        if(!this->isAvailable[i]) {
-            newHashTable.insertHash(this->hashTable[i]);
+    HashTable newHashTable(newSize ,this->PowerOf2Index);
+    for(int i=0;i<this->sizeOfTable;i++){
+        for(int j=0;j<this->hashTable[i].getListLength();j++){
+            newHashTable.insertHash(hashTable[i].getIndexInList(j)->getData());
         }
     }
-    this->hashTable = new shared_ptr<Player>[newSize];
-    for(int i=0;i<newSize;++i){
-        this->hashTable[i].swap(newHashTable.hashTable[i]);
-    }
-    free(this->isAvailable);
-    this->isAvailable = new int[newSize];
-    for(int i=0;i<newSize;i++){
-        this->isAvailable[i] = newHashTable.getAvailability(i);
-    }
+    delete this->hashTable;
+    this->hashTable = new List[newSize];
     this->sizeOfTable = newSize;
-    this->sizeOfHash2 = newSize - 3;
+    for(int i=0;i<newSize;i++){
+        for(int j=0;j<newHashTable.hashTable[i].getListLength();j++){
+           this->hashTable[i].AddToList(newHashTable.hashTable[i].getIndexInList(j)->getData());
+        }
+    }
 }
 //void HashTable::ExpandTable() {
 //
@@ -212,22 +165,26 @@ void HashTable::ExpandTable() {
 //}
 
 bool HashTable::isTableFull() {
-    if(this->curretnSize >=(float)(0.5 *this->sizeOfTable)){
+    if(this->curretnSize >=(float)(0.8 *this->sizeOfTable)){
         return true;
     }
     return false;
 }
 
+
 void HashTable::printTable() {
     for(int i=0;i< this->sizeOfTable;++i){
-        if(!isAvailable[i]){
-            cout<<i<<" "<< this->hashTable[i]->getPlayerId()<<endl;
-        }
+       for(int j=0;j<this->hashTable[i].getListLength();j++){
+           cout << this->hashTable[i].getIndexInList(j)->getData()->getPlayerId()<<" ";
+           cout << this->hashTable[i].getIndexInList(j)->getCount();
+           if(j < this->hashTable[i].getListLength()-1){
+               cout<< ", ";
+           }
+       }
+       if(this->hashTable[i].getListLength()!=0){
+           cout<< " " << endl;
+       }
     }
-}
-
-shared_ptr<Player> &HashTable::getPlayerinIndex(int index) {
-    return this->hashTable[index];
 }
 
 int HashTable::getTableSize() {
@@ -238,6 +195,3 @@ int HashTable::getCurrentSize() {
     return this->curretnSize;
 }
 
-int HashTable::getAvailability(int index) {
-    return this->isAvailable[index];
-}

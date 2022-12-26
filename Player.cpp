@@ -39,3 +39,7 @@ int Player::getGamesPlayed() const {
 void Player::setGamesPlayed(int gamesPlayed) {
     games_played = gamesPlayed;
 }
+
+int Player::getPlayerId() const {
+    return player_id;
+}
