@@ -15,4 +15,6 @@ add_executable(wet2mivneiNirNiz main.cpp
         Player.h
         Player.cpp
         HashTable.h
-        HashTable.cpp)
+        HashTable.cpp
+        List.cpp
+        List.h)

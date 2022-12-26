@@ -27,17 +27,17 @@ StatusType world_cup_t::add_team(int teamId)
 
 StatusType world_cup_t::remove_team(int teamId)
 {
-    if (teamId <= 0){
-        return StatusType::INVALID_INPUT;
-    }
-    shared_ptr<Team> DummyTeam = make_shared<Team>(teamId);
-    shared_ptr<Team> RealTeamToRemove = *teamsById.find(DummyTeam);
-    if (!RealTeamToRemove){
-        ///dont exist
-        return StatusType::FAILURE;
-    }
-    teamsByPlayersAbility.insert(newTeam);
-    return StatusType::SUCCESS;
+//    if (teamId <= 0){
+//        return StatusType::INVALID_INPUT;
+//    }
+//    shared_ptr<Team> DummyTeam = make_shared<Team>(teamId);
+//    shared_ptr<Team> RealTeamToRemove = *teamsById.find(DummyTeam);
+//    if (!RealTeamToRemove){
+//        ///dont exist
+//        return StatusType::FAILURE;
+//    }
+//    teamsByPlayersAbility.insert(newTeam);
+//    return StatusType::SUCCESS;
 }
 
 StatusType world_cup_t::add_player(int playerId, int teamId,
