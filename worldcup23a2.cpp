@@ -1,9 +1,9 @@
 #include "worldcup23a2.h"
 
-world_cup_t::world_cup_t()
-{
-	// TODO: Your code goes here
-}
+world_cup_t::world_cup_t():
+        teamsByPlayersAbility(Team::teamSumAbilityBigger, Team::teamSumAbilityEquals),
+        teamsById(Team::teamIdBigger, Team::teamIdEquals)
+{}
 
 world_cup_t::~world_cup_t()
 {
@@ -12,14 +12,32 @@ world_cup_t::~world_cup_t()
 
 StatusType world_cup_t::add_team(int teamId)
 {
-	// TODO: Your code goes here
+    if (teamId <= 0){
+        return StatusType::INVALID_INPUT;
+    }
+    shared_ptr<Team> newTeam = make_shared<Team>(teamId);
+    shared_ptr<Team> newTeamsFather = *teamsById.insert(newTeam);
+    if (!newTeamsFather){
+        ///already exists
+        return StatusType::FAILURE;
+    }
+    teamsByPlayersAbility.insert(newTeam);
 	return StatusType::SUCCESS;
 }
 
 StatusType world_cup_t::remove_team(int teamId)
 {
-	// TODO: Your code goes here
-	return StatusType::FAILURE;
+    if (teamId <= 0){
+        return StatusType::INVALID_INPUT;
+    }
+    shared_ptr<Team> DummyTeam = make_shared<Team>(teamId);
+    shared_ptr<Team> RealTeamToRemove = *teamsById.find(DummyTeam);
+    if (!RealTeamToRemove){
+        ///dont exist
+        return StatusType::FAILURE;
+    }
+    teamsByPlayersAbility.insert(newTeam);
+    return StatusType::SUCCESS;
 }
 
 StatusType world_cup_t::add_player(int playerId, int teamId,
