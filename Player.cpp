@@ -43,3 +43,15 @@ void Player::setGamesPlayed(int gamesPlayed) {
 int Player::getPlayerId() const {
     return player_id;
 }
+
+int Player::getCards() const {
+    return cards;
+}
+
+void Player::setCards(int cards) {
+    Player::cards = cards;
+}
+
+void Player::addCards(int more) {
+    Player::cards += more;
+}

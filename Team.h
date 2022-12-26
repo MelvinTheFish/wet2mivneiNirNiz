@@ -15,11 +15,33 @@ using namespace std;
 class Team {
 private:
     int TeamId;
+public:
+    void setTeamId(int teamId);
+
+private:
     int SumAbility;
+public:
+    void setSumAbility(int sumAbility);
+
+private:
     weak_ptr<Player_UnionFind_Node> root_player;
     permutation_t team_spirit;
+    bool isActive;
+    bool hasGoalKeeper;
+public:
+    bool HasGoalKeeper1() const;
+
+    void setHasGoalKeeper(bool isGoalKeeper);
+
+public:
+    void setIsActive(bool isActive);
+
+public:
+    bool isActive1() const;
+
 public:
     void setTeamSpirit(const permutation_t &teamSpirit);
+    void addToTeamSpirit(const permutation_t &addAfter);
 
 public:
     const permutation_t &getTeamSpirit() const;
@@ -32,9 +54,17 @@ public:
     int getSize() const;
 
     void setSize(int new_size);
+    void addSize(int more);
 
 private:
     int size;
+    int points;
+public:
+    int getPoints() const;
+
+    void setPoints(int points);
+
+    void addPoints(int more);
 
 public:
     Team(int teamId, int sumAbility);

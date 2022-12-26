@@ -18,7 +18,10 @@
 #include "wet2util.h"
 #include "avl_rank.h"
 #include "Team.h"
+#include "Player.h"
 #include <memory>
+#include "HashTable.h"
+#include "Player_UnionFind_Node.h"
 
 using namespace std;
 
@@ -29,6 +32,7 @@ private:
 	//
     AvlRankTree<shared_ptr<Team>> teamsByPlayersAbility;
     AvlRankTree<shared_ptr<Team>> teamsById;
+    HashTable playersTable;
 
 	//hash
 public:

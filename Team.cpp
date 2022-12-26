@@ -8,7 +8,8 @@ Team::Team(int teamId, int sumAbility) : TeamId(teamId), SumAbility(sumAbility) 
 
 
 
-Team::Team(int teamId) : TeamId(teamId), SumAbility(0), root_player(), size(0), team_spirit(permutation_t::neutral()){
+Team::Team(int teamId) : TeamId(teamId), SumAbility(0), root_player(), size(0),
+team_spirit(permutation_t::neutral()), isActive(true), hasGoalKeeper(false), points(0){
 }
 
 int Team::getSumAbility() const {
@@ -72,10 +73,55 @@ void Team::setSize(int new_size) {
     size = new_size;
 }
 
+
+void Team::addSize(int more) {
+    size += more;
+}
+
 const permutation_t &Team::getTeamSpirit() const {
     return team_spirit;
 }
 
 void Team::setTeamSpirit(const permutation_t &teamSpirit) {
     team_spirit = teamSpirit;
+}
+
+void Team::addToTeamSpirit(const permutation_t &addAfter) {
+    team_spirit = team_spirit * addAfter;
+}
+
+bool Team::isActive1() const {
+    return isActive;
+}
+
+void Team::setIsActive(bool isActive) {
+    Team::isActive = isActive;
+}
+
+void Team::setSumAbility(int sumAbilityAdd) {
+    SumAbility += sumAbility;
+}
+
+bool Team::HasGoalKeeper1() const {
+    return hasGoalKeeper;
+}
+
+void Team::setHasGoalKeeper(bool isGoalKeeper) {
+    Team::hasGoalKeeper = isGoalKeeper;
+}
+
+int Team::getPoints() const {
+    return points;
+}
+
+void Team::setPoints(int points) {
+    Team::points = points;
+}
+
+void Team::addPoints(int more) {
+    Team::points += more;
+}
+
+void Team::setTeamId(int teamId) {
+    TeamId = teamId;
 }

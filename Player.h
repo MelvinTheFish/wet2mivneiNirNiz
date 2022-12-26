@@ -52,6 +52,13 @@ private:
 
     int ability;
     int cards;
+public:
+    int getCards() const;
+
+    void setCards(int cards);
+    void addCards(int more);
+
+private:
     bool goalKeeper;
 
     shared_ptr<Player_UnionFind_Node> union_find_node;
