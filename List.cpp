@@ -12,35 +12,34 @@ List::List():first(),Last(),sizeOfList(0)
 
 
 
-void List::AddToList(shared_ptr<Player> player) {
+int List::AddToList(shared_ptr<Player> player) {
 
     Node* newNode = new Node(player);
     if(this->sizeOfList == 0){
         this->first = newNode;
         this->sizeOfList++;
-        return;
+        return 1;
     }
     int isinList = isInList(player->getPlayerId());
-    if(isinList == 0){
-        this->first->setCount(1);
-        return;
-    }
     if(isinList != -1){
-        Node* tmpNode = this->first;
-        if(isinList == this->sizeOfList-1){
-            this->Last->setCount(1);
-        }
-        else{
-            int i =0;
-            while(i<isinList){
-                tmpNode = tmpNode->next;
-                i++;
-            }
-            tmpNode->setCount(1);
-        }
-        delete newNode;
-        return;
+      return -1;
     }
+//    if(isinList != -1){
+//        Node* tmpNode = this->first;
+//        if(isinList == this->sizeOfList-1){
+//            this->Last->setCount(1);
+//        }
+//        else{
+//            int i =0;
+//            while(i<isinList){
+//                tmpNode = tmpNode->next;
+//                i++;
+//            }
+//            tmpNode->setCount(1);
+//        }
+//        delete newNode;
+//        return;
+//    }
     if(this->sizeOfList == 1){
         this->Last = newNode;
         this->Last->prev = this->first;

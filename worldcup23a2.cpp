@@ -1,5 +1,6 @@
 #include "worldcup23a2.h"
 
+
 world_cup_t::world_cup_t():
         teamsByPlayersAbility(Team::teamSumAbilityBigger, Team::teamSumAbilityEquals),
         teamsById(Team::teamIdBigger, Team::teamIdEquals), playersTable()
@@ -27,7 +28,7 @@ StatusType world_cup_t::add_team(int teamId)
 
 StatusType world_cup_t::remove_team(int teamId)
 {
-    if (teamId <= 0){
+    if (teamId <= 0) {
         return StatusType::INVALID_INPUT;
     }
     shared_ptr<Team> DummyTeam = make_shared<Team>(teamId);
@@ -86,7 +87,58 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
 
 output_t<int> world_cup_t::play_match(int teamId1, int teamId2)
 {
-	// TODO: Your code goes here
+    if(teamId1<=0||teamId2<=0||teamId1==teamId2){
+        return StatusType::INVALID_INPUT;
+    }
+
+    shared_ptr<Team> team1 = *teamsById.find(make_shared<Team>(teamId1));
+    shared_ptr<Team> team2 = *teamsById.find(make_shared<Team>(teamId2));
+    if(!team1||!team2){
+        return StatusType::FAILURE;
+    }
+
+    if(!team1->HasGoalKeeper1()||!team2->HasGoalKeeper1()){
+        return StatusType::FAILURE;
+    }
+    int scoreTeam1 = team1->getSumAbility() + team1->getPoints();
+    int scoreTeam2 = team2->getSumAbility() + team2->getPoints();
+
+    if(scoreTeam1 > scoreTeam2){
+        team1->setPoints(team1->getPoints() + 3);
+        team1->getRootPlayer().lock()->setAdditionalGames(1);
+        team2->getRootPlayer().lock()->setAdditionalGames(1);
+        return 1;
+
+    }
+    if(scoreTeam1 < scoreTeam2){
+        team2->setPoints(team2->getPoints() + 3);
+        team1->getRootPlayer().lock()->setAdditionalGames(1);
+        team2->getRootPlayer().lock()->setAdditionalGames(1);
+        return 3;
+    }
+    if(scoreTeam2 == scoreTeam1) {
+        permutation_t team1spirit = team1->getTeamSpirit();
+        permutation_t team2spirit = team2->getTeamSpirit();
+        if (team1spirit.strength() > team2spirit.strength()) {
+            team1->setPoints(team1->getPoints() + 3);
+            team1->getRootPlayer().lock()->setAdditionalGames(1);
+            team2->getRootPlayer().lock()->setAdditionalGames(1);
+            return 2;
+        }
+        if (team1spirit.strength() < team2spirit.strength()) {
+            team2->setPoints(team2->getPoints() + 3);
+            team1->getRootPlayer().lock()->setAdditionalGames(1);
+            team2->getRootPlayer().lock()->setAdditionalGames(1);
+            return 4;
+        }
+        if (team1spirit.strength() == team2spirit.strength()) {
+            team1->setPoints(team2->getPoints() + 1);
+            team2->setPoints(team2->getPoints() + 1);
+            team1->getRootPlayer().lock()->setAdditionalGames(1);
+            team2->getRootPlayer().lock()->setAdditionalGames(1);
+            return 0;
+        }
+    }
 	return StatusType::SUCCESS;
 }
 
@@ -99,7 +151,7 @@ output_t<int> world_cup_t::num_played_games_for_player(int playerId)
     if (playerIndex == -1){
         return StatusType::FAILURE;//there was never a player with this id
     }
-    shared_ptr<Player> player = playersTable.getPlayerinIndex(playerIndex);
+    shared_ptr<Player> player = playersTable.getPlayerinIndex(playerIndex,playerId);
     Find(player);
     return player->getGamesPlayed();
 }
@@ -113,7 +165,7 @@ StatusType world_cup_t::add_player_cards(int playerId, int cards)
     if (playerIndex == -1){
         return StatusType::FAILURE;//there was never a player with this id
     }
-    shared_ptr<Player> player = playersTable.getPlayerinIndex(playerIndex);
+    shared_ptr<Player> player = playersTable.getPlayerinIndex(playerIndex,playerId);
     shared_ptr<Team> playersTeam = Find(player);
     if (!playersTeam->isActive1()){
         return StatusType::FAILURE;//the player is out of the competition
@@ -131,7 +183,7 @@ output_t<int> world_cup_t::get_player_cards(int playerId)
     if (playerIndex == -1){
         return StatusType::FAILURE;//there was never a player with this id
     }
-    shared_ptr<Player> player = playersTable.getPlayerinIndex(playerIndex);
+    shared_ptr<Player> player = playersTable.getPlayerinIndex(playerIndex,playerId);
     return player->getCards();
 }
 
@@ -165,7 +217,7 @@ output_t<permutation_t> world_cup_t::get_partial_spirit(int playerId)
     if (playerIndex == -1){
         return StatusType::FAILURE;//there was never a player with this id
     }
-    shared_ptr<Player> player = playersTable.getPlayerinIndex(playerIndex);
+    shared_ptr<Player> player = playersTable.getPlayerinIndex(playerIndex,playerId);
     shared_ptr<Team> playersTeam = Find(player);
     if (!playersTeam->isActive1()){
         return StatusType::FAILURE;//the player is out of the competition

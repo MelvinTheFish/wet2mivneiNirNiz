@@ -72,11 +72,18 @@ int HashTable::insertHash(shared_ptr<Player> player) {
 //        return -1;
 //    }
 
+    if(this->findInHashTable(player->getPlayerId()) != -1){
+        return -1;
+    }
     if(this->isTableFull()){
         this->ExpandTable();
     }
     int hashIndex = hash(player->getPlayerId());
-    this->hashTable[hashIndex].AddToList(player);
+    int index = this->hashTable[hashIndex].AddToList(player);
+    if(index == -1){
+        return -1;
+    }
+
     this->curretnSize++;
     return hashIndex;
 }
@@ -112,6 +119,15 @@ int HashTable::findInHashTable(int playerId) {
     }
     return index;
 
+}
+
+shared_ptr<Player> HashTable::getPlayerinIndex(int index, int playerId) {
+    for(int i=0;i<this->hashTable[index].getListLength();++i) {
+        if (this->hashTable[index].getIndexInList(i)->getData()->getPlayerId() == playerId) {
+            return this->hashTable[index].getIndexInList(i)->getData();
+        }
+    }
+    return nullptr;
 }
 
 void HashTable::ExpandTable() {
@@ -176,7 +192,6 @@ void HashTable::printTable() {
     for(int i=0;i< this->sizeOfTable;++i){
        for(int j=0;j<this->hashTable[i].getListLength();j++){
            cout << this->hashTable[i].getIndexInList(j)->getData()->getPlayerId()<<" ";
-           cout << this->hashTable[i].getIndexInList(j)->getCount();
            if(j < this->hashTable[i].getListLength()-1){
                cout<< ", ";
            }

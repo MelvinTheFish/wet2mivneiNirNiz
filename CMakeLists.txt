@@ -17,4 +17,5 @@ add_executable(wet2mivneiNirNiz main.cpp
         HashTable.h
         HashTable.cpp
         List.cpp
-        List.h)
+        List.h
+        main23a2.cpp)

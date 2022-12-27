@@ -31,6 +31,7 @@ private:
 
 public:
     Player_UnionFind_Node(shared_ptr<Player> real_player, shared_ptr<Team> team);
+    void setAdditionalGames(int add);
 
     friend shared_ptr<Team> Find(shared_ptr<Player> player);
     friend shared_ptr<Team> Union(shared_ptr<Team> buyer_team, shared_ptr<Team> sold_team);

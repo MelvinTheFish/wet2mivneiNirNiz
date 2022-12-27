@@ -43,6 +43,8 @@ shared_ptr<Team> Find(shared_ptr<Player> player) {
 
 shared_ptr<Team> findHelper(shared_ptr<Player_UnionFind_Node> current) {
     if (!current->father_player_node) {///is root
+        shared_ptr<Player> current_player = current->player.lock();
+        current_player->setGamesPlayed(current->games_played_alone + current->additional_games);
         return current->father_team;
     }
     shared_ptr<Team> team = findHelper(current->father_player_node);
@@ -66,6 +68,7 @@ shared_ptr<Team> findHelper(shared_ptr<Player_UnionFind_Node> current) {
             - current->games_of_team_without
             + root_player_node->additional_games
             - root_player_node->games_of_team_without);
+
 
     current->father_player_node = root_player_node;///shrinking path
 
@@ -123,3 +126,8 @@ shared_ptr<Team> Union(shared_ptr<Team> buyer_team, shared_ptr<Team> sold_team) 
 
     return buyer_team;
 }
+
+void Player_UnionFind_Node::setAdditionalGames(int add) {
+    this->additional_games = this->additional_games + add;
+}
+

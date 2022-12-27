@@ -29,7 +29,7 @@ public:
     void printTable();
     int findInHashTable(int playerId);
     int getTableSize();
-    shared_ptr<Player>& getPlayerinIndex(int index);
+    shared_ptr<Player> getPlayerinIndex(int index,int playerId);
     int getCurrentSize();
     int getAvailability(int index);
 

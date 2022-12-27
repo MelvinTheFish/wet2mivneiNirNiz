@@ -13,11 +13,11 @@ class List{
         shared_ptr<Player> player;
         Node* prev;
         Node* next;
-        int count;
-        Node():player(nullptr),prev(nullptr),next(nullptr),count(0)
+
+        Node():player(nullptr),prev(nullptr),next(nullptr)
         {}
 
-        Node(shared_ptr<Player> player):player(player),prev(nullptr),next(nullptr),count(1)
+        Node(shared_ptr<Player> player):player(player),prev(nullptr),next(nullptr)
         {}
 
         Node* getNext(){
@@ -26,14 +26,9 @@ class List{
         Node* getPrev(){
             return this->prev;
         }
-        int getCount(){
-            return this->count;
-        }
+
         shared_ptr<Player> getData(){
             return this->player;
-        }
-        void setCount(int count){
-            this->count = this->count + count;
         }
 
 
@@ -45,7 +40,7 @@ public:
     List& operator=(const List& other) = default;
     ~List() = default;
     int isInList(int playerId);
-    void AddToList(shared_ptr<Player> player);
+    int AddToList(shared_ptr<Player> player);
     Node* getIndexInList(int index);
     int getListLength();
 

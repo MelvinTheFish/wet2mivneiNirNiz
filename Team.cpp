@@ -99,7 +99,7 @@ void Team::setIsActive(bool isActive) {
 }
 
 void Team::setSumAbility(int sumAbilityAdd) {
-    SumAbility += sumAbility;
+    SumAbility += sumAbilityAdd;
 }
 
 bool Team::HasGoalKeeper1() const {
