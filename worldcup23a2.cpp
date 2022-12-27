@@ -71,7 +71,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
     newPlayer->setUnionFindNode(newPlayersNode);
     //updating team
     teamsByPlayersAbility.remove(teamOfPlayer);
-    teamOfPlayer->setSumAbility(ability);
+    teamOfPlayer->addSumAbility(ability);
     if (teamOfPlayer->getSize() == 0){
         teamOfPlayer->setRootPlayer(newPlayersNode);
     }
@@ -205,7 +205,7 @@ output_t<int> world_cup_t::get_ith_pointless_ability(int i)
         return StatusType::FAILURE;
     }
     shared_ptr<Team> teamAtRank = *teamsByPlayersAbility.Select(i+1);//because in the lecture rank was starting from 1, here from 0
-    return teamAtRank->getSumAbility();
+    return teamAtRank->getTeamId();
 }
 
 output_t<permutation_t> world_cup_t::get_partial_spirit(int playerId)

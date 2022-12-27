@@ -22,6 +22,7 @@ private:
     int SumAbility;
 public:
     void setSumAbility(int sumAbility);
+    void addSumAbility(int sumAbilityAdd);
 
 private:
     weak_ptr<Player_UnionFind_Node> root_player;
