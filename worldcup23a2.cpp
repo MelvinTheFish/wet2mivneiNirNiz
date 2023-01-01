@@ -219,6 +219,9 @@ output_t<int> world_cup_t::get_ith_pointless_ability(int i)
 
 output_t<permutation_t> world_cup_t::get_partial_spirit(int playerId)
 {
+//    if(playerId == 46){
+//        cout <<"test" << endl;
+//    }
     if (playerId <= 0){
         return StatusType::INVALID_INPUT;
     }

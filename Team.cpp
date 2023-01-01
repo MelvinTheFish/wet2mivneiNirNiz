@@ -105,7 +105,7 @@ void Team::addSumAbility(int sumAbilityAdd) {
     SumAbility += sumAbilityAdd;
 }
 void Team::setSumAbility(int sumAbility) {
-    SumAbility += sumAbility;
+    SumAbility = sumAbility;
 }
 
 bool Team::HasGoalKeeper1() const {
@@ -113,7 +113,7 @@ bool Team::HasGoalKeeper1() const {
 }
 
 void Team::setHasGoalKeeper(bool isGoalKeeper) {
-    Team::hasGoalKeeper = isGoalKeeper;
+    Team::hasGoalKeeper = isGoalKeeper || this->hasGoalKeeper;
 }
 
 int Team::getPoints() const {

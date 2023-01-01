@@ -3,7 +3,9 @@
 //
 
 #include "Player_UnionFind_Node.h"
+#include <iostream>
 
+using namespace std;
 Player_UnionFind_Node::Player_UnionFind_Node(const shared_ptr<Player> real_player, const shared_ptr<Team> team)
         : player(real_player), father_player_node(nullptr), father_team(nullptr),
         diff_from_father(permutation_t::neutral()), games_played_alone(real_player->getGamesPlayed()),
@@ -33,7 +35,7 @@ Player_UnionFind_Node::Player_UnionFind_Node(const shared_ptr<Player> real_playe
         this->father_team = team;
         //team->setRootPlayer(this_sp);
     }
-    team->setTeamSpirit(team->getTeamSpirit()*real_player->getSpirit());
+    //team->addToTeamSpirit(real_player->getSpirit());
     //team->setSize(team->getSize()+1);
 }
 
@@ -45,6 +47,7 @@ shared_ptr<Team> findHelper(shared_ptr<Player_UnionFind_Node> current) {
     if (!current->father_player_node) {///is root
         shared_ptr<Player> current_player = current->player.lock();
         current_player->setGamesPlayed(current->games_played_alone + current->additional_games);
+        //current.additional = 0?
         return current->father_team;
     }
     shared_ptr<Team> team = findHelper(current->father_player_node);
@@ -54,7 +57,13 @@ shared_ptr<Team> findHelper(shared_ptr<Player_UnionFind_Node> current) {
     shared_ptr<Player> current_player = current->player.lock();
 
     ///updating partial spirits
-    current_player->setPartialSpirit(current_father->player.lock()->getPartialSpirit() * current->diff_from_father);
+    permutation_t father_partial = current_father->player.lock()->getPartialSpirit();
+    permutation_t curr_diff = current->diff_from_father;
+    //cout << father_partial << endl;
+    //cout << curr_diff << endl;
+    permutation_t new_partial = father_partial * curr_diff;
+    //cout << new_partial << endl;
+    current_player->setPartialSpirit(new_partial);
     current->diff_from_father = current_father->diff_from_father * current->diff_from_father;
 
     ///updating games played
@@ -86,23 +95,26 @@ shared_ptr<Team> Union(shared_ptr<Team> buyer_team, shared_ptr<Team> sold_team) 
     }
     shared_ptr<Player_UnionFind_Node> smaller_root_player_node, bigger_root_player_node;
 
-    if (buyer_team->size > sold_team->size){///bigger buys smaller
+    if (buyer_team->size > sold_team->size){///bigger buys smaller =?
 
         smaller_root_player_node = sold_team->root_player.lock();
         bigger_root_player_node = buyer_team->root_player.lock();
 
-        shared_ptr<Player_UnionFind_Node> sold_root_node = bigger_root_player_node;
-        shared_ptr<Player_UnionFind_Node> buyer_root_node = smaller_root_player_node;
+        shared_ptr<Player_UnionFind_Node> sold_root_node = smaller_root_player_node;
+        shared_ptr<Player_UnionFind_Node> buyer_root_node = bigger_root_player_node;
 
         shared_ptr<Player> sold_root_player = sold_root_node->player.lock();
         shared_ptr<Player> buyer_root_player = buyer_root_node->player.lock();
 
+//        smaller_root_player_node->diff_from_father = buyer_root_player->getPartialSpirit().inv()
+//                                                     * buyer_team->team_spirit
+//                                                     * buyer_root_player->getPartialSpirit()
+//                                                     * sold_root_player->getPartialSpirit();//
         smaller_root_player_node->diff_from_father = buyer_root_player->getPartialSpirit().inv()
-                * buyer_team->team_spirit
-                * buyer_root_player->getPartialSpirit();
-
+                                                     * buyer_team->team_spirit
+                                                     * sold_root_player->getPartialSpirit();//
     }
-    else {///smaller buys bigger (or equals)
+    else {///smaller buys bigger (or equals? )
         smaller_root_player_node = buyer_team->getRootPlayer().lock();
         bigger_root_player_node = sold_team->getRootPlayer().lock();
 
