@@ -76,7 +76,14 @@ shared_ptr<Team> findHelper(shared_ptr<Player_UnionFind_Node> current) {
 }
 
 shared_ptr<Team> Union(shared_ptr<Team> buyer_team, shared_ptr<Team> sold_team) {
-
+    if (buyer_team->size == 0 || sold_team->size == 0){
+        if (buyer_team->size == 0){
+            return sold_team;
+        }
+        else{
+            return buyer_team;
+        }
+    }
     shared_ptr<Player_UnionFind_Node> smaller_root_player_node, bigger_root_player_node;
 
     if (buyer_team->size > sold_team->size){///bigger buys smaller
