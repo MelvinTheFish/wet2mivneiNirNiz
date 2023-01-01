@@ -5,9 +5,9 @@
 #include "Player.h"
 
 Player::Player(int playerId, int teamId, const permutation_t &spirit, int gamesPlayed, int ability, int cards,
-               bool goalKeeper) : player_id(playerId), team_id(teamId), spirit(spirit), games_played(gamesPlayed),
-                        ability(ability), cards(cards), goalKeeper(goalKeeper), union_find_node(nullptr),
-                        partial_spirit(spirit){
+               bool goalKeeper) : player_id(playerId), team_id(teamId), spirit(spirit),
+                            partial_spirit(spirit),games_played(gamesPlayed),
+                        ability(ability), cards(cards), goalKeeper(goalKeeper), union_find_node(nullptr){
 }
 
 shared_ptr<Player_UnionFind_Node> Player::getUnionFindNode() const {

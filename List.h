@@ -38,11 +38,12 @@ public:
     List();
     List(const List& other) = default;
     List& operator=(const List& other) = default;
-    ~List() = default;
+    ~List();
     int isInList(int playerId);
     int AddToList(shared_ptr<Player> player);
     Node* getIndexInList(int index);
     int getListLength();
+    void DestroyList();
 
 
 private:

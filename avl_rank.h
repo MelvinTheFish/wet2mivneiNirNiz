@@ -378,7 +378,7 @@ T* AvlRankTree<T>::insert(const T& data) {
     else{
         AvlNode* newNodeFatherAtInsert = insertAvlNode(data, root, nullptr);
         if (!newNodeFatherAtInsert){////already exists
-            return nullptr;
+            return NULL;
         }
         size++;
         return &(newNodeFatherAtInsert->data);
@@ -554,7 +554,11 @@ bool AvlRankTree<T>::removeAvlNode(T& data, AvlRankTree<T>::AvlNode *current) {
             else{
                 this->root = nullptr;
             }
+//            if(!current){
+//                cout << 666 << endl;
+//            }
             delete current;
+
 
 
 

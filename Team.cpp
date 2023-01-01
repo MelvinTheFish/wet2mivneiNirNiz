@@ -8,8 +8,8 @@ Team::Team(int teamId, int sumAbility) : TeamId(teamId), SumAbility(sumAbility) 
 
 
 
-Team::Team(int teamId) : TeamId(teamId), SumAbility(0), root_player(), size(0),
-team_spirit(permutation_t::neutral()), isActive(true), hasGoalKeeper(false), points(0){
+Team::Team(int teamId) : TeamId(teamId), SumAbility(0), root_player(),
+team_spirit(permutation_t::neutral()), isActive(true), hasGoalKeeper(false),size(0), points(0){
 }
 
 int Team::getSumAbility() const {
@@ -51,6 +51,9 @@ bool Team::teamIdEquals(const shared_ptr<Team> &team1, const shared_ptr<Team> &t
 
 
 bool Team::teamSumAbilityEquals(const shared_ptr<Team> &team1, const shared_ptr<Team> &team2) {
+    if(!team1||!team2){
+        return false;
+    }
     if (team1->SumAbility == team2->SumAbility && team1->TeamId == team2->TeamId){
         return true;
     }

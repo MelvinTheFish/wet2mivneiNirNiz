@@ -32,18 +32,30 @@ int main() {
 
     world_cup_t *world_cup = new world_cup_t();
 
-    for (int i = 0; i < 5; ++i) {
-        world_cup->add_team(i);
-        for (int j = 0; j < 5; ++j) {
+    for (int i = 0; i < 1; ++i) {
+        world_cup->add_team(i+1);
+        for (int j = 0; j < 1; ++j) {
             fill_random_permutation(arr);
-            world_cup->add_player(id, i, arr, id, id, id, true);
+            world_cup->add_player(id, i+1, arr, 0, id, id, true);
             id++;
         }
     }
+    world_cup->add_team(3);
+    world_cup->buy_team(1,3);
 
-    for (int j = 0; j < 25; ++j) {
-        cout << "player: " << j+1 << " played: " << world_cup->num_played_games_for_player(j+1).ans() << " games." << endl;
-    }
+
+
+//    world_cup->play_match(3,4);
+//    world_cup->play_match(4,5);
+//    world_cup->play_match(2,5);
+//    world_cup->play_match(1,2);
+//    cout << world_cup->get_team_points(4).ans()<<" "<<world_cup->get_team_points(5).ans()<<endl;
+//    world_cup->buy_team(4,5);
+//    cout << world_cup->get_team_points(4).ans()<<endl;
+//
+//    for (int j = 0; j < 25; ++j) {
+//        cout << "player: " << j+1 << " played: " << world_cup->num_played_games_for_player(j+1).ans() << " games." << endl;
+//    }
 
 
     return 0;

@@ -5,20 +5,47 @@
 
 class List;
 
-List::List():first(),Last(),sizeOfList(0)
+List::List():sizeOfList(0),first(),Last()
 {
 
 }
 
+void List::DestroyList() {
+
+    Node* tmpNode = this->first;
+    while(this->sizeOfList > 0){
+        Node* toDelete = tmpNode;
+        if(sizeOfList>1){
+            tmpNode = tmpNode->next;
+        }
+        delete toDelete;
+        this->sizeOfList --;
+    }
+}
+
+
+List::~List() {
+
+    Node* tmpNode = this->first;
+    while(this->sizeOfList > 0){
+        Node* toDelete = tmpNode;
+        if(sizeOfList>1){
+            tmpNode = tmpNode->next;
+        }
+        delete toDelete;
+        this->sizeOfList --;
+    }
+}
 
 
 int List::AddToList(shared_ptr<Player> player) {
 
-    Node* newNode = new Node(player);
+    Node* newNode = new Node;
+    newNode->player = player;
     if(this->sizeOfList == 0){
         this->first = newNode;
         this->sizeOfList++;
-        return 1;
+        return 0;
     }
     int isinList = isInList(player->getPlayerId());
     if(isinList != -1){
@@ -51,6 +78,7 @@ int List::AddToList(shared_ptr<Player> player) {
         this->Last = this->Last->next;
     }
     this->sizeOfList++;
+    return sizeOfList-1;
 }
 
 int List::getListLength() {

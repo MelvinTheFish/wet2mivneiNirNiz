@@ -18,7 +18,8 @@ public:
     HashTable(int tableSize ,int PowerOf2Index);
     HashTable(const HashTable& hashTable);
     HashTable& operator=(const HashTable& hashTable);
-    ~HashTable() = default;
+    ~HashTable();
+    void destroyTable();
 
     bool isTableFull();
     void ExpandTable();

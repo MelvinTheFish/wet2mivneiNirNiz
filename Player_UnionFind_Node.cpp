@@ -80,6 +80,7 @@ shared_ptr<Team> Union(shared_ptr<Team> buyer_team, shared_ptr<Team> sold_team) 
     shared_ptr<Player_UnionFind_Node> smaller_root_player_node, bigger_root_player_node;
 
     if (buyer_team->size > sold_team->size){///bigger buys smaller
+
         smaller_root_player_node = sold_team->root_player.lock();
         bigger_root_player_node = buyer_team->root_player.lock();
 

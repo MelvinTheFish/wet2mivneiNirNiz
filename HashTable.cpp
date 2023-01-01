@@ -7,14 +7,26 @@
 #include "math.h"
 #include "List.h"
 
-HashTable::HashTable(){
-
+HashTable::HashTable()
+{
     this->curretnSize = 0;
     this->PowerOf2Index = 4;
     this->sizeOfTable =  pow(2,4)-1;
     hashTable = new List[sizeOfTable];
-
 }
+HashTable::~HashTable() {
+
+    this->destroyTable();
+    delete[] this->hashTable;
+}
+
+void HashTable::destroyTable() {
+    for(int i=0;i<this->sizeOfTable;i++){
+        this->hashTable[i].DestroyList();
+    }
+}
+
+
 HashTable::HashTable(int tableSize, int PowerOf2Index) {
 
     this->curretnSize = 0;
@@ -141,7 +153,8 @@ void HashTable::ExpandTable() {
             newHashTable.insertHash(hashTable[i].getIndexInList(j)->getData());
         }
     }
-    delete this->hashTable;
+    this->destroyTable();
+    delete[] this->hashTable;
     this->hashTable = new List[newSize];
     this->sizeOfTable = newSize;
     for(int i=0;i<newSize;i++){
