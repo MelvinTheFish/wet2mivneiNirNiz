@@ -182,7 +182,7 @@ StatusType world_cup_t::add_player_cards(int playerId, int cards)
     player->addCards(cards);
     return StatusType::SUCCESS;
 }
-
+//kjh
 output_t<int> world_cup_t::get_player_cards(int playerId)
 {
     if (playerId <= 0){
